@@ -9,6 +9,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -715,20 +716,7 @@ public class apiStepdefinitions extends BaseTest {
         Assert.assertEquals(patient_id, repJP.getString("lists[" + dataIndex + "].patient_id"));
     }
 
-
-    @And("The api user prepares a GET request with valid authorization information")
-    public void theApiUserPreparesAGETRequestWithValidAuthorizationInformation() {
-
-
-    }
-
-    @And("The api user includes the id <id> in the request")
-    public void theApiUserIncludesTheIdIdInTheRequest() {
-    }
-
-
-
-    @Given("The api user prepares a GET request containing the {int} information to send to the api visitorsPurposeid endpoint.")
+     @Given("The api user prepares a GET request containing the {int} information to send to the api visitorsPurposeid endpoint.")
     public void the_api_user_prepares_a_get_request_containing_the_information_to_send_to_the_api_visitors_purposeid_endpoint(int id) {
         requestBody.put("id", id);
 
@@ -744,6 +732,17 @@ public class apiStepdefinitions extends BaseTest {
                 .get(fullPath);
 
         response.prettyPrint();
+    }
+
+
+    @And("The api user verifies that the visitorPurpose response body contains {string}, {string}, {string}, {string}")
+    public void theApiUserVerifiesThatTheVisitorPurposeResponseBodyContains(String id, String visitors_purpose, String description, String created_at) {
+        JsonPath repJP = response.jsonPath();
+
+         Assert.assertEquals("The ID does not match the expected value.", id, repJP.getString("lists.id"));
+        Assert.assertEquals("The visitors_purpose does not match the expected value.", visitors_purpose, repJP.getString("lists.visitors_purpose"));
+        Assert.assertEquals("The description does not match the expected value.", description, repJP.getString("lists.description"));
+        Assert.assertEquals("The created_at does not match the expected value.", created_at, repJP.getString("lists.created_at"));
     }
 }
 
