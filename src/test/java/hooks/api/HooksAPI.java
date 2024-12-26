@@ -10,8 +10,7 @@ import utilities.api.Authentication;
 
 public class HooksAPI extends BaseTest {
     public static RequestSpecification spec;
-
-
+    public static String fullPath; // Tam path'i dinamik olarak tutacak değişken
 
     @Before(order = 2)
     public void setUpScenario(Scenario scenario) {
@@ -20,9 +19,8 @@ public class HooksAPI extends BaseTest {
         // Senaryonun adına göre belirleniyor
         if (scenario.getName().contains("Invalid Token")) {
             token = configLoader.getApiConfig("invalidToken"); // Geçersiz token al
-
         } else {
-            token = Authentication.generateToken();
+            token = Authentication.generateToken(); // Geçerli token üret
         }
 
         spec = new RequestSpecBuilder()
@@ -30,6 +28,14 @@ public class HooksAPI extends BaseTest {
                 .addHeader("Accept", "application/json")
                 .addHeader("Authorization", "Bearer " + token)
                 .build();
+    }
+
+    /**
+     * Full path'i belirlemek için yardımcı bir metod ekledik.
+     * Bu metod path'i dinamik olarak ayarlar.
+     */
+    public static void setFullPath(String path) {
+        fullPath = path;
     }
 
     @After
@@ -44,9 +50,7 @@ public class HooksAPI extends BaseTest {
         String scenarioStatus = scenario.getStatus().name();
 
         // Kendi loglama method'unu kullanarak bilgileri yazdırma
-        System.out.println("Senaryo Adi: " + scenarioName);
+        System.out.println("Senaryo Adı: " + scenarioName);
         System.out.println("Durum: " + scenarioStatus);
     }
 }
-
-

@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
         },
         features = {"src/test/resources/features/api"},
         glue = {"stepdefinitions","hooks/api","utilities/api"},
-        tags = "@smoke",
+        tags = "@iso",
         dryRun =false
 
 

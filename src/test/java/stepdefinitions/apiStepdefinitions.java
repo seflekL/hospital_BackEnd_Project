@@ -2,10 +2,12 @@
 package stepdefinitions;
 
 import base.BaseTest;
+import hooks.api.HooksAPI;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
@@ -15,10 +17,12 @@ import utilities.api.TestData;
 
 import java.util.Map;
 
+import static com.sun.beans.introspect.PropertyInfo.Name.description;
 import static hooks.api.HooksAPI.spec;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
-import static utilities.api.API_Methods.fullPath;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static utilities.api.API_Methods.*;
 
 public class apiStepdefinitions extends BaseTest {
 
@@ -31,15 +35,6 @@ public class apiStepdefinitions extends BaseTest {
 
     }
 
-    @Given("The api user sends a GET request and saves the returned response.")
-    public void the_api_user_sends_a_get_request_and_saves_the_returned_response() {
-        response = given()
-                .spec(spec)
-                .when()
-                .get(fullPath);
-
-        response.prettyPrint();
-    }
 
     @Given("The api user verifies that the status code is {int}.")
     public void the_api_user_verifies_that_the_status_code_is(int code) {
@@ -64,40 +59,10 @@ public class apiStepdefinitions extends BaseTest {
         assertEquals(created_at, repJP.getString("lists[" + dataIndex + "].created_at"));
     }
 
-    @Given("The api user sends a GET request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.")
-    public void the_api_user_sends_a_get_request_saves_the_returned_response_and_verifies_that_the_status_code_is_with_the_reason_phrase_forbidden() {
-        try {
-            response = given()
-                    .spec(spec)
-                    .when()
-                    .get(fullPath);
-        } catch (Exception e) {
-            exceptionMesaj = e.getMessage();
-        }
 
-        System.out.println("exceptionMesaj : " + exceptionMesaj);
-        assertEquals(configLoader.getApiConfig("unauthorizedExceptionMessage"), exceptionMesaj);
 
-    }
 
-    @Given("The api user prepares a GET request containing the {int} information to send to the api visitorsPurposeid endpoint.")
-    public void the_api_user_prepares_a_get_request_containing_the_information_to_send_to_the_api_visitors_purposeid_endpoint(int id) {
-        requestBody.put("id", id);
 
-        System.out.println("Get Body : " + requestBody);
-    }
-
-    @Given("The api user sends a GET body and saves the returned response.")
-    public void the_api_user_sends_a_get_body_and_saves_the_returned_response() {
-        response = given()
-                .spec(spec)
-                .contentType(ContentType.JSON)
-                .when()
-                .body(requestBody.toString())
-                .get(fullPath);
-
-        response.prettyPrint();
-    }
 
     @Given("The api user verifies that the data in the response body includes {string}, {string}, {string} and {string}.")
     public void the_api_user_verifies_that_the_data_in_the_response_body_includes_and(String id, String visitors_purpose, String description, String created_at) {
@@ -308,11 +273,6 @@ public class apiStepdefinitions extends BaseTest {
 
 
 //Gulnar
-
-    @When("The api user sets {string} path parameters")
-    public void theApiUserSetsPathParameters(String pathparam) {
-        API_Methods.pathParam(pathparam);
-    }
 
 
     @Given("The api user prepares a GET request containing \\{int}, \\{string} ,\\{int},\\{int} information to send to the api updateExpenseHead endpoint.")
@@ -630,6 +590,161 @@ public class apiStepdefinitions extends BaseTest {
         Assert.assertEquals(requestBody.get("id"), repJP.getInt("deletedId"));
     }
 
+    //Levent
+    @When("The api user sets {string} path parameters")
+    public void theApiUserSetsPathParameters(String pathparam) {
+        API_Methods.pathParam(pathparam);
+    }
+
+
+    @Given("The api user prepares a valid GET request to the {string} endpoint with proper authorization")
+    public void theApiUserPreparesAValidGETRequestToTheEndpointWithProperAuthorization(String pathparam) {
+
+        API_Methods.pathParam(pathparam);
+    }
+
+    @When("The api user sends the GET request and saves the response")
+    public void theApiUserSendsTheGETRequestAndSavesTheResponse() {
+        response = sendRequest("GET", null);
+    }
+
+    @Then("The api user verifies that the status code is {int}")
+    public void theApiUserVerifiesThatTheStatusCodeIs(int code) {
+        statusCodeAssert(code);
+
+    }
+
+    @And("The api user verifies that the {string} information in the response body is {string}")
+    public void theApiUserVerifiesThatTheInformationInTheResponseBodyIs(String key, String value) {
+        assertBody(key, value);
+    }
+
+    @And("The api user prepares a GET request to send to the api staffList endpoint with invalid authorization")
+    public void theApiUserPreparesAGETRequestToSendToTheApiStaffListEndpointWithInvalidAuthorization() {
+        // Hooks sınıfında geçersiz token zaten ayarlandı, burada ek işlem gerekmez
+        System.out.println("GET request prepared with invalid authorization.");
+
+    }
+
+    @And("The api user prepares a GET request with an invalid token")
+    public void theApiUserPreparesAGETRequestWithAnInvalidToken() {
+        spec.header("Authorization", "Bearer invalidToken");
+        System.out.println("GET request prepared with an invalid token.");
+    }
+
+    @When("The API user has invalid authorization token {string}")
+    public void theAPIUserHasInvalidAuthorizationToken(String invalidToken) {
+        response = given()
+                .spec(spec)
+                .header("Authorization", "Bearer " + invalidToken) // Geçersiz token ekleniyor
+                .when()
+                .get(fullPath);  // fullPath doğru şekilde tanımlanmalı
+        response.prettyPrint();  // Yanıtı konsola yazdır
+    }
+
+    @Given("An api user sends a {string} request with invalid token and correct data, saves the returned response, verifies that the returned status code is {int} with the reason phrase {string}.")
+    public void an_api_user_sends_a_request_with_invalid_token_and_correct_data_saves_the_returned_response_verifies_that_the_information_in_the_response_body_is(String httpMethod, Integer code, String value) {
+
+
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(requestBody.toString())
+                .post(fullPath);
+
+        response.prettyPrint();
+
+        API_Methods.statusCodeAssert(code);
+        API_Methods.assertBody("message", value);
+
+    }
+
+    @Given("The api user sends a GET request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.")
+    public void the_api_user_sends_a_get_request_saves_the_returned_response_and_verifies_that_the_status_code_is_with_the_reason_phrase_forbidden() {
+        try {
+            response = given()
+                    .spec(spec)
+                    .when()
+                    .get(fullPath);
+        } catch (Exception e) {
+            exceptionMesaj = e.getMessage();
+        }
+
+        System.out.println("exceptionMesaj : " + exceptionMesaj);
+        assertEquals(configLoader.getApiConfig("unauthorizedExceptionMessage"), exceptionMesaj);
+
+    }
+
+    @When("The api user sends a GET request, saves the returned response, and verifies that the status code is {int}")
+    public void theApiUserSendsAGETRequestSavesTheReturnedResponseAndVerifiesThatTheStatusCodeIs(int code) {
+        response = sendRequest("GET", "");
+        statusCodeAssert(200);
+
+    }
+
+
+    @Then("The api user verifies that the response body contains {string}, {string}, {string}, {string}, and {string}")
+    public void theApiUserVerifiesThatTheResponseBodyContainsAnd(String dataIndex, String id, String name, String surname, String employee_id) {
+        repJP = response.jsonPath();
+
+        Assert.assertEquals(id, repJP.getString("lists[" + dataIndex + "].id"));
+        Assert.assertEquals(name, repJP.getString("lists[" + dataIndex + "].name"));
+        Assert.assertEquals(surname, repJP.getString("lists[" + dataIndex + "].surname"));
+        Assert.assertEquals(employee_id, repJP.getString("lists[" + dataIndex + "].employee_id"));
+    }
+
+    @Given("The api user sends a GET request and saves the returned response.")
+    public void the_api_user_sends_a_get_request_and_saves_the_returned_response() {
+        response = given()
+                .spec(spec)
+                .when()
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
+
+
+    @Then("The api user verifies that the response body contains {string}, {string}, {string}, {string}")
+    public void theApiUserVerifiesThatTheResponseBodyContains(String dataIndex, String id, String patient_name, String patient_id) {
+
+        repJP = response.jsonPath();
+
+        Assert.assertEquals(id, repJP.getString("lists[" + dataIndex + "].id"));
+        Assert.assertEquals(patient_name, repJP.getString("lists[" + dataIndex + "].patient_name"));
+        Assert.assertEquals(patient_id, repJP.getString("lists[" + dataIndex + "].patient_id"));
+    }
+
+
+    @And("The api user prepares a GET request with valid authorization information")
+    public void theApiUserPreparesAGETRequestWithValidAuthorizationInformation() {
+
+
+    }
+
+    @And("The api user includes the id <id> in the request")
+    public void theApiUserIncludesTheIdIdInTheRequest() {
+    }
+
+
+
+    @Given("The api user prepares a GET request containing the {int} information to send to the api visitorsPurposeid endpoint.")
+    public void the_api_user_prepares_a_get_request_containing_the_information_to_send_to_the_api_visitors_purposeid_endpoint(int id) {
+        requestBody.put("id", id);
+
+        System.out.println("Get Body : " + requestBody);
+    }
+    @Given("The api user sends a GET body and saves the returned response.")
+    public void the_api_user_sends_a_get_body_and_saves_the_returned_response() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(requestBody.toString())
+                .get(fullPath);
+
+        response.prettyPrint();
+    }
 }
 
 
