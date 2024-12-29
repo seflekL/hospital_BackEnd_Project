@@ -1,6 +1,6 @@
 Feature: As an administrator (admin), I should be able to access the STAFF List via API connection.
 # Bir yönetici (admin) olarak, API bağlantısı yoluyla PERSONEL Listesine erişebilmeliyim.
-
+@smoke
   Scenario: TC001[US001API] - GET Valid authorization returns success for /api/staffList
   # TC001[US001API] - Geçerli yetkilendirme ile yapılan GET isteği, /api/staffList için başarı döndürmelidir.
 

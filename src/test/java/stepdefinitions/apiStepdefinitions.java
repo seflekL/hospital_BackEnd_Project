@@ -380,15 +380,15 @@ public class apiStepdefinitions extends BaseTest {
     @Then("The api user sends a DELETE request and saves the returned response.")
     public void theApiUserSendsADELETERequestAndSavesTheReturnedResponse() {
 
-             response = given()
-                    .spec(spec)
-                    .contentType(ContentType.JSON)
-                    .when()
-                    .body(requestBody.toString())
-                    .delete(fullPath);
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(requestBody.toString())
+                .delete(fullPath);
 
-            response.prettyPrint();
-        }
+        response.prettyPrint();
+    }
     @When("The api user sends the DELETE request")
     public void the_api_user_sends_the_delete_request(int id) {
         requestBody.put("id", id);
@@ -399,7 +399,7 @@ public class apiStepdefinitions extends BaseTest {
 
     @When("The api user prepares a DELETE request to send to the api visitorsPurposeDelete endpoint with id {int}")
     public void theApiUserPreparesADELETERequestToSendToTheApiVisitorsPurposeDeleteEndpointWithId(int id) {
-         requestBody.put("id", id);
+        requestBody.put("id", id);
 
         System.out.println("Prepared DELETE Request Body: " + requestBody.toString());
 
