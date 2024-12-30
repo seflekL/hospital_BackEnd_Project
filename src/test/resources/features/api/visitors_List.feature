@@ -31,7 +31,7 @@ Feature: As an administrator (admin) I should be able to access the Visitor List
     # Api kullanıcısı response body'deki "<dataindex>", "<id>", "<name>", "<surname>" ve "<employee_id>" bilgilerini doğrular
 
     Examples:
-      | dataIndex | id   | name             | source | purpose |
-      | 0        | 1392 | Andra Carrington | Online | have a query   |
+      | dataIndex | id   | name             | source | purpose      |
+      | 0         | 1392 | Andra Carrington | Online | have a query |
 
 

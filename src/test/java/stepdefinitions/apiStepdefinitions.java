@@ -445,15 +445,37 @@ public class apiStepdefinitions extends BaseTest {
     }
 
     @Then("The api user verifies visitorsList that the response body contains {string}, {string}, {string}, {string}, and {string}")
-    public void theApiUserVerifiesVisitorsListThatTheResponseBodyContainsAnd(String dataIndex, String id, String name, String source, String purpose) {
+    public void theApiUserVerifiesVisitorsListThatTheResponseBodyContainsAnd( String id, String name, String source, String purpose) {
 
         repJP = response.jsonPath();
+        Assert.assertEquals(id, repJP.getString("lists[0].id"));
+        Assert.assertEquals(name, repJP.getString("lists[0].name"));
+        Assert.assertEquals(source, repJP.getString("lists[0].source"));
+        Assert.assertEquals(purpose, repJP.getString("lists[0].purpose"));
 
-        Assert.assertEquals(id, repJP.getString("lists[" + dataIndex + "].id"));
-        Assert.assertEquals(name, repJP.getString("lists[" + dataIndex + "].name"));
-        Assert.assertEquals(source, repJP.getString("lists[" + dataIndex + "].source"));
-        Assert.assertEquals(purpose, repJP.getString("lists[" + dataIndex + "].purpose"));
     }
+
+    @And("The api user verifies that the visitorsID response body contains {string}")
+    public void theApiUserVerifiesThatTheVisitorsIDResponseBodyContains(String id) {
+        JsonPath repJP = response.jsonPath();
+
+        Assert.assertEquals("The ID does not match the expected value.", id, repJP.getString("lists.id"));
+
+    }
+
+    @When("The api user verifies visitorsID that the response body contains {string},{string},{string},{string},{string},{string}")
+    public void theApiUserVerifiesVisitorsIDThatTheResponseBodyContains(
+            String id, String source, String purpose, String name, String email,String created_at) {
+        response.then()
+                .assertThat()
+                .body("lists.id", Matchers.equalTo(id),
+                        "lists.source", Matchers.equalTo(source),
+                        "lists.purpose", Matchers.equalTo(purpose),
+                        "lists.name", Matchers.equalTo(name),
+                        "lists.email", Matchers.equalTo(email),
+                        "lists.created_at", Matchers.equalTo(created_at));
+    }
+
 }
 
 
