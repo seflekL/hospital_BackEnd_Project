@@ -36,7 +36,6 @@ public class apiStepdefinitions extends BaseTest {
     Pojo pojoRequest;
 
 
-
     @Given("The api user sets {string} path parameters.")
     public void the_api_user_sets_path_parameters(String pathParam) {
         API_Methods.pathParam(pathParam);
@@ -389,6 +388,7 @@ public class apiStepdefinitions extends BaseTest {
 
         response.prettyPrint();
     }
+
     @When("The api user sends the DELETE request")
     public void the_api_user_sends_the_delete_request(int id) {
         requestBody.put("id", id);
@@ -404,6 +404,7 @@ public class apiStepdefinitions extends BaseTest {
         System.out.println("Prepared DELETE Request Body: " + requestBody.toString());
 
     }
+
     @And("The api user verifies that the DeletedId information is the same as the id information in the request body")
     public void the_api_user_verifies_that_the_deleted_id_information_is_the_same_as_the_id_information_in_the_request_body() {
         Integer deletedId = response.jsonPath().getInt("DeletedId");
@@ -411,10 +412,12 @@ public class apiStepdefinitions extends BaseTest {
         assertEquals(requestId, deletedId);
         System.out.println("DeletedId Verified: " + deletedId);
     }
+
     @Given("The api user prepares a DELETE request that does not contain data")
     public void the_api_user_prepares_a_delete_request_that_does_not_contain_data() {
 
     }
+
     @Given("The api user sends a DELETE request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.")
     public void the_api_user_sends_a_delete_request_saves_the_returned_response_and_verifies_that_the_status_code_is_with_the_reason_phrase_forbidden
             () {
@@ -432,6 +435,7 @@ public class apiStepdefinitions extends BaseTest {
         System.out.println("exceptionMesaj : " + exceptionMesaj);
         Assert.assertEquals(configLoader.getApiConfig("unauthorizedExceptionMessage"), exceptionMesaj);
     }
+
     @When("The api user prepares a PATCH request that does not contain an id but includes {string} and {string} information to send to the api visitorsPurposeUpdate endpoint.")
     public void the_api_user_prepares_a_patch_request_that_does_not_contain_an_id_but_includes_and_information_to_send_to_the_api_visitors_purpose_update_endpoint(String visitors_purpose, String description) {
 
@@ -440,6 +444,16 @@ public class apiStepdefinitions extends BaseTest {
 
     }
 
+    @Then("The api user verifies visitorsList that the response body contains {string}, {string}, {string}, {string}, and {string}")
+    public void theApiUserVerifiesVisitorsListThatTheResponseBodyContainsAnd(String dataIndex, String id, String name, String source, String purpose) {
+
+        repJP = response.jsonPath();
+
+        Assert.assertEquals(id, repJP.getString("lists[" + dataIndex + "].id"));
+        Assert.assertEquals(name, repJP.getString("lists[" + dataIndex + "].name"));
+        Assert.assertEquals(source, repJP.getString("lists[" + dataIndex + "].source"));
+        Assert.assertEquals(purpose, repJP.getString("lists[" + dataIndex + "].purpose"));
+    }
 }
 
 
