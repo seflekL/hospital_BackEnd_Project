@@ -34,6 +34,7 @@ public class apiStepdefinitions extends BaseTest {
     TestData testData = new TestData();
     String exceptionMesaj = null;
     Pojo pojoRequest;
+    private String jsonBody;
 
 
     @Given("The api user sets {string} path parameters.")
@@ -182,6 +183,14 @@ public class apiStepdefinitions extends BaseTest {
         System.out.println("Get Body : " + requestBody);
     }
 
+    @When("The api user prepares a GET request containing the {int} information to send to the api's endpoint.")
+    public void the_api_user_prepares_a_get_request_containing_the_information_to_send_to_the_api_s_endpoint(int id) {
+        requestBody.put("id", id);
+
+        System.out.println("Get Body : " + requestBody);
+    }
+
+
     @Given("The api user sends a GET body and saves the returned response.")
     public void the_api_user_sends_a_get_body_and_saves_the_returned_response() {
         response = given()
@@ -261,11 +270,11 @@ public class apiStepdefinitions extends BaseTest {
     @When("api user sends a POST request and saves the returned response.")
     public void api_user_sends_a_post_request_and_saves_the_returned_response() {
         response = given()
-                .spec(spec)
-                .contentType(ContentType.JSON)
+                .spec(spec) // Spec içindeki base URL ve diğer ayarlar
+                .contentType(ContentType.JSON) // İçerik türü JSON
                 .when()
-                .body(map)
-                .post(fullPath);
+                .body(map) // Gönderilecek JSON gövdesi
+                .post(fullPath); // POST isteğiath);
 
         response.prettyPrint();
     }
@@ -445,7 +454,7 @@ public class apiStepdefinitions extends BaseTest {
     }
 
     @Then("The api user verifies visitorsList that the response body contains {string}, {string}, {string}, {string}, and {string}")
-    public void theApiUserVerifiesVisitorsListThatTheResponseBodyContainsAnd( String id, String name, String source, String purpose) {
+    public void theApiUserVerifiesVisitorsListThatTheResponseBodyContainsAnd(String id, String name, String source, String purpose) {
 
         repJP = response.jsonPath();
         Assert.assertEquals(id, repJP.getString("lists[0].id"));
@@ -465,7 +474,7 @@ public class apiStepdefinitions extends BaseTest {
 
     @When("The api user verifies visitorsID that the response body contains {string},{string},{string},{string},{string},{string}")
     public void theApiUserVerifiesVisitorsIDThatTheResponseBodyContains(
-            String id, String source, String purpose, String name, String email,String created_at) {
+            String id, String source, String purpose, String name, String email, String created_at) {
         response.then()
                 .assertThat()
                 .body("lists.id", Matchers.equalTo(id),
@@ -476,6 +485,73 @@ public class apiStepdefinitions extends BaseTest {
                         "lists.created_at", Matchers.equalTo(created_at));
     }
 
-}
+
+    @And("The api user prepares a POST request containing {string} and {string} information to send to the api visitorsAdd endpoint.")
+    public void theApiUserPreparesAPOSTRequestContainingAndInformationToSendToTheApiVisitorsAddEndpoint(String purpose, String name) {
+
+        requestBody.put("purpose", purpose);
+        requestBody.put("name", name);
+
+    }
+
+
+    @Given("The api user prepares a Json POST request containing {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, and {string} information to send to the api visitorsAdd endpoint.")
+    public void the_api_user_prepares_a_json_post_request_containing_and_information_to_send_to_the_api_visitors_add_endpoint(String source, String purpose, String name, String email, String contact, String idProof, String visitTo, String ipdOpdStaffId, String relatedTo, String noOfPeople, String date, String inTime, String outTime, String note) {
+        jsonBody = String.format("""
+                {
+                    "source": "%s",
+                    "purpose": "%s",
+                    "name": "%s",
+                    "email": "%s",
+                    "contact": "%s",
+                    "id_proof": "%s",
+                    "visit_to": "%s",
+                    "ipd_opd_staff_id": "%s",
+                    "related_to": "%s",
+                    "no_of_pepple": "%s",
+                    "date": "%s",
+                    "in_time": "%s",
+                    "out_time": "%s",
+                    "note": "%s"
+                }
+                """, source, purpose, name, email, contact, idProof, visitTo, ipdOpdStaffId, relatedTo, noOfPeople, date, inTime, outTime, note);
+    }
+
+    @When("api user sends a Json POST request and saves the returned response.")
+    public void apiUserSendsAJsonPOSTRequestAndSavesTheReturnedResponse() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .body(jsonBody)
+                .post(fullPath);
+
+        response.prettyPrint();
+
+    }
+
+
+    @And("The api user prepares a FAKE Json POST request containing {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, and {string} information to send to the api visitorsAdd endpoint.")
+    public void theApiUserPreparesAFAKEJsonPOSTRequestContainingAndInformationToSendToTheApiVisitorsAddEndpoint(String fakeone, String fakeone2, String name, String email, String contact, String idProof, String visitTo, String ipdOpdStaffId, String relatedTo, String noOfPeople, String date, String inTime, String outTime, String note) {
+
+        jsonBody = String.format("""
+                {
+                    "fakeone": "%s",
+                    "fakeone2": "%s",
+                    "name": "%s",
+                    "email": "%s",
+                    "contact": "%s",
+                    "id_proof": "%s",
+                    "visit_to": "%s",
+                    "ipd_opd_staff_id": "%s",
+                    "related_to": "%s",
+                    "no_of_pepple": "%s",
+                    "date": "%s",
+                    "in_time": "%s",
+                    "out_time": "%s",
+                    "note": "%s"
+                }
+                """, fakeone, fakeone2, name, email, contact, idProof, visitTo, ipdOpdStaffId, relatedTo, noOfPeople, date, inTime, outTime, note);
+    }
+    }
 
 

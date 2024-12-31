@@ -53,7 +53,7 @@ Feature: Valid Authorization - Data validation for /api/visitorsPurposeId endpoi
     Given The api user sets "api/visitorsPurposeId" path parameters.
     # Api kullanicisi "api/visitorsPurposeId" path parametrelerini olusturur
     When The api user prepares a GET request containing the <id> information to send to the api visitorsPurposeid endpoint.
-    # Api kullanicisi api visitorsPurposeId endpointine gondermek icin <id> bilgisini iceren bir get request hazirlar
+    # Api kullanıcısı, API'nin endpointine göndermek için <id> bilgisini içeren bir GET request hazırlar.
     And The api user sends a GET body and saves the returned response.
     # Api kullanicisi GET body gonderir ve donen responsei kaydeder
     Then The api user verifies that the status code is 200.
