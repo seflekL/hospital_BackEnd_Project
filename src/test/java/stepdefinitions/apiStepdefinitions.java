@@ -3,10 +3,12 @@ package stepdefinitions;
 
 import base.BaseTest;
 import hooks.api.HooksAPI;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -19,6 +21,7 @@ import utilities.api.API_Methods;
 import utilities.api.TestData;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.sun.beans.introspect.PropertyInfo.Name.description;
@@ -552,6 +555,80 @@ public class apiStepdefinitions extends BaseTest {
                 }
                 """, fakeone, fakeone2, name, email, contact, idProof, visitTo, ipdOpdStaffId, relatedTo, noOfPeople, date, inTime, outTime, note);
     }
+
+    @And("The api user prepares a Json PATCH request containing {string},{string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, and {string} information to send to the api visitorsAdd endpoint.")
+    public void theApiUserPreparesAJsonPATCHRequestContainingAndInformationToSendToTheApiVisitorsAddEndpoint(String id, String source, String purpose, String name, String email, String contact, String idProof, String visitTo, String ipdOpdStaffId, String relatedTo, String noOfPeople, String date, String inTime, String outTime, String note) {
+
+        jsonBody = String.format("""
+                {
+                    "id": "%s",
+                    "source": "%s",
+                    "purpose": "%s",
+                    "name": "%s",
+                    "email": "%s",
+                    "contact": "%s",
+                    "id_proof": "%s",
+                    "visit_to": "%s",
+                    "ipd_opd_staff_id": "%s",
+                    "related_to": "%s",
+                    "no_of_pepple": "%s",
+                    "date": "%s",
+                    "in_time": "%s",
+                    "out_time": "%s",
+                    "note": "%s"
+                }
+                """, id, source, purpose, name, email, contact, idProof, visitTo, ipdOpdStaffId, relatedTo, noOfPeople, date, inTime, outTime, note);
     }
+
+    @When("api user sends a Json PATCH request and saves the returned response.")
+    public void apiUserSendsAJsonPATCHRequestAndSavesTheReturnedResponse() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .body(jsonBody)
+                .patch(fullPath);
+
+        response.prettyPrint();
+    }
+
+    @And("The api user prepares a Json FAKE PATCH request containing {string},{string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, and {string} information to send to the api visitorsAdd endpoint.")
+    public void theApiUserPreparesAJsonFAKEPATCHRequestContainingAndInformationToSendToTheApiVisitorsAddEndpoint(String id, String id2, String purpose, String name, String email, String contact, String idProof, String visitTo, String ipdOpdStaffId, String relatedTo, String noOfPeople, String date, String inTime, String outTime, String note) {
+
+        jsonBody = String.format("""
+                {
+                    "id": "%s",
+                    "source": "%s",
+                    "purpose": "%s",
+                    "name": "%s",
+                    "email": "%s",
+                    "contact": "%s",
+                    "id_proof": "%s",
+                    "visit_to": "%s",
+                    "ipd_opd_staff_id": "%s",
+                    "related_to": "%s",
+                    "no_of_pepple": "%s",
+                    "date": "%s",
+                    "in_time": "%s",
+                    "out_time": "%s",
+                    "note": "%s"
+                }
+                """, id, id2, purpose, name, email, contact, idProof, visitTo, ipdOpdStaffId, relatedTo, noOfPeople, date, inTime, outTime, note);
+    }
+
+
+    @Then("The API user verifies that the status code is {int}")
+    public void theAPIUserVerifiesThatTheStatusCodeIs() {
+        Assert.assertEquals(403, response.getStatusCode());
+
+
+    }
+
+    @And("The API user verifies that the message in the response body is {string}")
+    public void theAPIUserVerifiesThatTheMessageInTheResponseBodyIs() {
+        String reasonPhrase = response.getStatusLine(); // StatusLine'dan mesajı alır
+        Assert.assertTrue(reasonPhrase.contains("Forbidden"));
+    }
+}
+
 
 
