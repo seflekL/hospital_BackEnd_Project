@@ -24,15 +24,10 @@ Feature: Valid Authorization - Data validation for /api/visitorsPurposeId endpoi
 # TC014[US005API] - Geçersiz veri (id) veya eksik yetkilendirme ile /api/visitorsPurposeId endpoint doğrulaması.
 
     Given The api user sets "api/visitorsPurposeId" path parameters
-  # Api kullanıcısı "api/visitorsPurposeId" path parametrelerini oluşturur.
-    And The api user prepares a GET request containing the "<id>" information to send to the api visitorsPurposeId endpoint.
-  # Api kullanıcısı geçersiz yetkilendirme bilgileri veya id içermeyen bir GET isteği hazırlar.
-    When The api user sends a GET body and saves the returned response.
-  # Api kullanıcısı GET isteğini gönderir ve dönen yanıtı kaydeder.
-    Then The api user verifies that the status code is 203
-  # Api kullanıcısı status kodunun 203 olduğunu doğrular.
-    And The api user verifies that the "message" information in the response body is "No id or wrong id."
-  # Api kullanıcısı response body'deki "message" bilgisinin "No id or wrong id." olduğunu doğrular.
+     And The api user prepares a GET request containing the "<id>" information to send to the api visitorsPurposeId endpoint.
+     When The api user sends a GET body and saves the returned response.
+     Then The api user verifies that the status code is 203
+     And The api user verifies that the "message" information in the response body is "No id or wrong id."
 
     Examples:
       | id       |
