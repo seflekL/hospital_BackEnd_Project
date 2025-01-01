@@ -638,6 +638,7 @@ public class apiStepdefinitions extends BaseTest {
 
 
     }
+
     @Given("The api user sends a  request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.")
     public void the_api_user_sends_a_request_saves_the_returned_response_and_verifies_that_the_status_code_is_with_the_reason_phrase_forbidden() {
         try {
@@ -654,8 +655,80 @@ public class apiStepdefinitions extends BaseTest {
 
     }
 
+    @Then("The api user verifies that the bloodgroup response body contains {string}, {string}, {string}, {string}, and {string}")
+    public void theApiUserVerifiesThatTheBloodgroupResponseBodyContainsAnd(String dataIndex, String id, String name, String is_blood_group, String created_at) {
+
+        repJP = response.jsonPath();
+
+        Assert.assertEquals(id, repJP.getString("lists[" + dataIndex + "].id"));
+        Assert.assertEquals(name, repJP.getString("lists[" + dataIndex + "].name"));
+        Assert.assertEquals(is_blood_group, repJP.getString("lists[" + dataIndex + "].is_blood_group"));
+        Assert.assertEquals(created_at, repJP.getString("lists[" + dataIndex + "].created_at"));
+    }
+
+
+    @And("The api user verifies that the bloodgroupbyID response body contains {string}, {string}, {string}, and {string}")
+    public void theApiUserVerifiesThatTheBloodgroupbyIDResponseBodyContainsAnd(String id, String name, String is_blood_group, String created_at) {
+        JsonPath repJP = response.jsonPath();
+        Assert.assertEquals("1", repJP.getString("lists.id"));
+        Assert.assertEquals("DirtBlood", repJP.getString("lists.name"));
+        Assert.assertEquals("0", repJP.getString("lists.is_blood_group"));
+        Assert.assertEquals("2024-12-09 11:58:45", repJP.getString("lists.created_at"));
+    }
+
+    @And("The api user prepares bloodGroup Json POST request containing {string},{string} information to send to the api's endpoint.")
+    public void theApiUserPreparesBloodGroupJsonPOSTRequestContainingInformationToSendToTheApiSEndpoint(String name, String is_blood_group) {
+
+        jsonBody = String.format("""
+                {
+                    "name": "%s",
+                    "is_blood_group": "%s"
+                }
+                """, name, is_blood_group);
+    }
+
+    @And("The api user prepares a false bloodGroupcode Json POST request containing {string},{string} information to send to the api's endpoint.")
+    public void theApiUserPreparesAFalseBloodGroupcodeJsonPOSTRequestContainingInformationToSendToTheApiSEndpoint(String namee, String is_blood_group) {
+        jsonBody = String.format("""
+                {
+                    "namee": "%s",
+                    "is_blood_group": "%s"
+                }
+                """, namee, is_blood_group);
+    }
+
+    @And("The api user prepares bloodGroup Json PATCH request containing {string},{string},{string} information to send to the api's endpoint.")
+    public void theApiUserPreparesBloodGroupJsonPATCHRequestContainingInformationToSendToTheApiSEndpoint(String id, String name, String is_blood_group) {
+
+        jsonBody = String.format("""
+                {
+                    "id": "%s",
+                    "name": "%s",
+                    "is_blood_group": "%s"
+                }
+                """, id, name, is_blood_group);
+    }
+
+    @When("The api user prepares a fake bloodGroup Json PATCH request containing {string},{string},{string} information to send to the api's endpoint.")
+    public void theApiUserPreparesAFakeBloodGroupJsonPATCHRequestContainingInformationToSendToTheApiSEndpoint(String idd, String namee, String is_blood_group) {
+
+        jsonBody = String.format("""
+                {
+                    "idd": "%s",
+                    "namee": "%s",
+                    "is_blood_group": "%s"
+                }
+                """, idd, namee, is_blood_group);
+    }
+
+    @Then("The api user verifies that the Notice response body contains {string}, {string}, {string}, {string},{string} and {string}")
+    public void theApiUserVerifiesThatTheNoticeResponseBodyContainsAnd(String id, String type, String slug, String url, String dataIndex, String date) {
+        repJP = response.jsonPath();
+
+        Assert.assertEquals(id, repJP.getString("lists[" + dataIndex + "].id"));
+        Assert.assertEquals(type, repJP.getString("lists[" + dataIndex + "].type"));
+        Assert.assertEquals(slug, repJP.getString("lists[" + dataIndex + "].slug"));
+        Assert.assertEquals(url, repJP.getString("lists[" + dataIndex + "].url"));
+    }
+
 }
-
-
-
-
