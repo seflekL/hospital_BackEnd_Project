@@ -27,6 +27,7 @@ import java.util.Map;
 import static com.sun.beans.introspect.PropertyInfo.Name.description;
 import static hooks.api.HooksAPI.spec;
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.requestSpecification;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -628,7 +629,33 @@ public class apiStepdefinitions extends BaseTest {
         String reasonPhrase = response.getStatusLine(); // StatusLine'dan mesajı alır
         Assert.assertTrue(reasonPhrase.contains("Forbidden"));
     }
+
+
+    @When("The api user prepares a DELETE request to send to the api's endpoint with id {int}")
+    public void theApiUserPreparesADELETERequestToSendToTheApiSEndpointWithId(int id) {
+        requestBody = new JSONObject();
+        requestBody.put("id", id);
+
+
+    }
+    @Given("The api user sends a  request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.")
+    public void the_api_user_sends_a_request_saves_the_returned_response_and_verifies_that_the_status_code_is_with_the_reason_phrase_forbidden() {
+        try {
+            response = given()
+                    .spec(spec)
+                    .when()
+                    .get(fullPath);
+        } catch (Exception e) {
+            exceptionMesaj = e.getMessage();
+        }
+
+        System.out.println("exceptionMesaj : " + exceptionMesaj);
+        assertEquals(configLoader.getApiConfig("unauthorizedExceptionMessage"), exceptionMesaj);
+
+    }
+
 }
+
 
 
 
