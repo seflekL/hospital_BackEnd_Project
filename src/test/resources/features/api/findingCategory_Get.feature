@@ -3,7 +3,6 @@ Feature: As an administrator (admin) I should be able to access the finding cate
 
   Scenario:TC095[US029API]Validate api/getFindingCategory API Response
 
-
     Given The api user prepares a valid GET request to the "api/getFindingCategory" endpoint with proper authorization
     When The api user sends the GET request and saves the response
     Then The api user verifies that the status code is 200
@@ -13,7 +12,8 @@ Feature: As an administrator (admin) I should be able to access the finding cate
   Scenario Outline: TC096[US029API]Validate expense details in the response body
 
     Given The api user sets "api/getFindingCategory" path parameters
-    And The api user prepares a GET request containing the <id> information to send to the api's endpoint.
+    And     And The api user prepares a GET request containing the <id> information to send to the api's endpoint.
+
     When The api user sends a GET body and saves the returned response.
     Then The api user verifies that the expenseHead response body contains  "<id>", "<exp_category>", "<is_active>", and "<created_at>"
     Then The api user verifies that the findingCategory response body contains  "<id>", "<category>", "<created_at>"
