@@ -731,4 +731,45 @@ public class apiStepdefinitions extends BaseTest {
         Assert.assertEquals(url, repJP.getString("lists[" + dataIndex + "].url"));
     }
 
-}
+    @And("The api user prepares notice Json POST request containing {string},{string},{string}and {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesNoticeJsonPOSTRequestContainingAndInformationToSendToTheApiSEndpoint(String type, String title, String description, String slug) {
+        jsonBody = String.format("""
+                {
+                    "type": "%s",
+                    "title": "%s",
+                    "description": "%s",
+                    "slug": "%s"
+                }
+                """, type, title, description, slug);
+
+
+    }
+
+    @And("The api user prepares Fake notice Json POST request containing {string},{string},{string}and {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesFakeNoticeJsonPOSTRequestContainingAndInformationToSendToTheApiSEndpoint(String typee, String titlee, String description, String slug) {
+        jsonBody = String.format("""
+                {
+                    "typee": "%s",
+                    "titlee": "%s",
+                    "description": "%s",
+                    "slug": "%s"
+                }
+                """, typee, titlee, description, slug);
+    }
+
+    @And("The api user prepares Updated notice Json POST request containing {string},{string},{string},{string}and {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesUpdatedNoticeJsonPOSTRequestContainingAndInformationToSendToTheApiSEndpoint(String id,String type, String title, String description, String slug) {
+
+        jsonBody = String.format("""
+                {
+                    "id": "%s",
+                    "type": "%s",
+                    "title": "%s",
+                    "description": "%s",
+                    "slug": "%s"
+                }
+                """, id,type, title, description, slug);
+
+
+    }
+    }
