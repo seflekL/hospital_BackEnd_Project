@@ -1,7 +1,7 @@
 Feature: As an administrator (admin), I should be able to access announcements via API connection.
 
 
-  Scenario:TC064[US019API]Code 200 Validate NoticeAPI Response
+  Scenario:TC087[US027API]Code 200 Validate NoticeAPI Response
 
     Given The api user prepares a valid GET request to the "api/getNotice" endpoint with proper authorization
     When The api user sends the GET request and saves the response
