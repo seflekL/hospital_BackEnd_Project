@@ -11,6 +11,7 @@ import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.matcher.ResponseAwareMatcher;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
@@ -20,10 +21,12 @@ import pojos.Pojo;
 import utilities.api.API_Methods;
 import utilities.api.TestData;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.base.Predicates.equalTo;
 import static com.sun.beans.introspect.PropertyInfo.Name.description;
 import static hooks.api.HooksAPI.spec;
 import static io.restassured.RestAssured.given;
@@ -758,7 +761,7 @@ public class apiStepdefinitions extends BaseTest {
     }
 
     @And("The api user prepares Updated notice Json POST request containing {string},{string},{string},{string}and {string} information to send to the api's endpoint.")
-    public void theApiUserPreparesUpdatedNoticeJsonPOSTRequestContainingAndInformationToSendToTheApiSEndpoint(String id,String type, String title, String description, String slug) {
+    public void theApiUserPreparesUpdatedNoticeJsonPOSTRequestContainingAndInformationToSendToTheApiSEndpoint(String id, String type, String title, String description, String slug) {
 
         jsonBody = String.format("""
                 {
@@ -768,8 +771,103 @@ public class apiStepdefinitions extends BaseTest {
                     "description": "%s",
                     "slug": "%s"
                 }
-                """, id,type, title, description, slug);
+                """, id, type, title, description, slug);
 
 
+    }
+
+
+    @Then("The api user verifies that the expenseHead response body contains  {string}, {string}, {string}, and {string}")
+    public void theApiUserVerifiesThatTheExpenseHeadResponseBodyContainsAnd(String id, String expCategory, String isActive, String createdAt) {
+
+        // Doğrudan JsonPath ile doğrulama
+        String actualId = response.jsonPath().getString("details.id");
+        String actualExpCategory = response.jsonPath().getString("details.exp_category");
+        String actualIsActive = response.jsonPath().getString("details.is_active");
+        String actualCreatedAt = response.jsonPath().getString("details.created_at");
+
+        // Assert işlemleri
+        assert actualId.equals(id) : "Expected id: " + id + ", but found: " + actualId;
+        assert actualExpCategory.equals(expCategory) : "Expected exp_category: " + expCategory + ", but found: " + actualExpCategory;
+        assert actualIsActive.equals(isActive) : "Expected is_active: " + isActive + ", but found: " + actualIsActive;
+        assert actualCreatedAt.equals(createdAt) : "Expected created_at: " + createdAt + ", but found: " + actualCreatedAt;
+
+    }
+
+
+    @And("The api user prepares expenseHead Json POST request containing {string}, {string}, {string}, {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesExpenseHeadJsonPOSTRequestContainingInformationToSendToTheApiSEndpoint(String exp_category, String description, String is_active, String is_deleted) {
+
+        jsonBody = String.format("""
+                 {
+                     "exp_category": "%s",
+                     "description": "%s",
+                     "is_active": "%s",
+                     "is_deleted": "%s"
+                 }
+                """, exp_category, description, is_active, is_deleted);
+    }
+
+    @And("The api user prepares Fake expenseHead Json POST request containing {string}, {string}, {string}, {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesFakeExpenseHeadJsonPOSTRequestContainingInformationToSendToTheApiSEndpoint(String exp_categoryy, String descriptionn, String is_active, String is_deleted) {
+
+        jsonBody = String.format("""
+                 {
+                     "exp_category": "%s",
+                     "description": "%s",
+                     "is_active": "%s",
+                     "is_deleted": "%s"
+                 }
+                """, exp_categoryy, descriptionn, is_active, is_deleted);
+    }
+
+
+    @And("The api user prepares expense Json PATCH request containing {string},{string}, {string}, {string}, {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesExpenseJsonPATCHRequestContainingInformationToSendToTheApiSEndpoint(String id, String exp_category, String descriptionn, String is_active, String is_deleted) {
+
+        jsonBody = String.format("""
+                 {
+                     "id": "%s",
+                     "exp_category": "%s",
+                     "description": "%s",
+                     "is_active": "%s",
+                     "is_deleted": "%s"
+                 }
+                """, id, exp_category, descriptionn, is_active, is_deleted);
+    }
+
+    @And("The api user prepares Fake expense Json PATCH request containing {string},{string}, {string}, {string}, {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesFakeExpenseJsonPATCHRequestContainingInformationToSendToTheApiSEndpoint(String idd, String exp_categoryy, String descriptionn, String is_active, String is_deleted) {
+        jsonBody = String.format("""
+                 {
+                     "id": "%s",
+                     "exp_category": "%s",
+                     "description": "%s",
+                     "is_active": "%s",
+                     "is_deleted": "%s"
+                 }
+                """, idd, exp_categoryy, descriptionn, is_active, is_deleted);
+
+    }
+
+
+    @And("The api user verifies that the findingCategory response body contains {string}, {string}, {string}and {string}")
+    public void theApiUserVerifiesThatTheFindingCategoryResponseBodyContainsAnd(String id, String category, String created_at, String dataIndex) {
+
+        repJP = response.jsonPath();
+
+        Assert.assertEquals(id, repJP.getString("lists[" + dataIndex + "].id"));
+        Assert.assertEquals(category, repJP.getString("lists[" + dataIndex + "].category"));
+        Assert.assertEquals(created_at, repJP.getString("lists[" + dataIndex + "].created_at"));
+    }
+
+    @And("The api user verifies that the findingCategoryById response body contains {string}, {string} and {string}")
+    public void theApiUserVerifiesThatTheFindingCategoryByIdResponseBodyContainsAnd(String id, String category, String created_at) {
+
+        response.then()
+                .assertThat()
+                .body("details.id", Matchers.equalTo(id),
+                        "details.category", Matchers.equalTo(category),
+                        "details.created_at", Matchers.equalTo(created_at));
     }
     }
