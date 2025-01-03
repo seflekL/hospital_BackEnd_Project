@@ -822,24 +822,9 @@ public class apiStepdefinitions extends BaseTest {
     }
 
 
-
-
     @And("The api user prepares expense Json PATCH request containing {string},{string}, {string}, {string}, {string} information to send to the api's endpoint.")
-    public void theApiUserPreparesExpenseJsonPATCHRequestContainingInformationToSendToTheApiSEndpoint(String id,String exp_category, String descriptionn, String is_active, String is_deleted) {
+    public void theApiUserPreparesExpenseJsonPATCHRequestContainingInformationToSendToTheApiSEndpoint(String id, String exp_category, String descriptionn, String is_active, String is_deleted) {
 
-            jsonBody = String.format("""
-                 {
-                     "id": "%s",
-                     "exp_category": "%s",
-                     "description": "%s",
-                     "is_active": "%s",
-                     "is_deleted": "%s"
-                 }
-                """,id, exp_category, descriptionn, is_active, is_deleted);
-    }
-
-    @And("The api user prepares Fake expense Json PATCH request containing {string},{string}, {string}, {string}, {string} information to send to the api's endpoint.")
-    public void theApiUserPreparesFakeExpenseJsonPATCHRequestContainingInformationToSendToTheApiSEndpoint(String idd,String exp_categoryy, String descriptionn, String is_active, String is_deleted) {
         jsonBody = String.format("""
                  {
                      "id": "%s",
@@ -848,7 +833,41 @@ public class apiStepdefinitions extends BaseTest {
                      "is_active": "%s",
                      "is_deleted": "%s"
                  }
-                """,idd, exp_categoryy, descriptionn, is_active, is_deleted);
+                """, id, exp_category, descriptionn, is_active, is_deleted);
+    }
+
+    @And("The api user prepares Fake expense Json PATCH request containing {string},{string}, {string}, {string}, {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesFakeExpenseJsonPATCHRequestContainingInformationToSendToTheApiSEndpoint(String idd, String exp_categoryy, String descriptionn, String is_active, String is_deleted) {
+        jsonBody = String.format("""
+                 {
+                     "id": "%s",
+                     "exp_category": "%s",
+                     "description": "%s",
+                     "is_active": "%s",
+                     "is_deleted": "%s"
+                 }
+                """, idd, exp_categoryy, descriptionn, is_active, is_deleted);
 
     }
-}
+
+
+    @And("The api user verifies that the findingCategory response body contains {string}, {string}, {string}and {string}")
+    public void theApiUserVerifiesThatTheFindingCategoryResponseBodyContainsAnd(String id, String category, String created_at, String dataIndex) {
+
+        repJP = response.jsonPath();
+
+        Assert.assertEquals(id, repJP.getString("lists[" + dataIndex + "].id"));
+        Assert.assertEquals(category, repJP.getString("lists[" + dataIndex + "].category"));
+        Assert.assertEquals(created_at, repJP.getString("lists[" + dataIndex + "].created_at"));
+    }
+
+    @And("The api user verifies that the findingCategoryById response body contains {string}, {string} and {string}")
+    public void theApiUserVerifiesThatTheFindingCategoryByIdResponseBodyContainsAnd(String id, String category, String created_at) {
+
+        response.then()
+                .assertThat()
+                .body("details.id", Matchers.equalTo(id),
+                        "details.category", Matchers.equalTo(category),
+                        "details.created_at", Matchers.equalTo(created_at));
+    }
+    }
