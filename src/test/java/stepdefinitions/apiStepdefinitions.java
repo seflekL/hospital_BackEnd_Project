@@ -870,4 +870,39 @@ public class apiStepdefinitions extends BaseTest {
                         "details.category", Matchers.equalTo(category),
                         "details.created_at", Matchers.equalTo(created_at));
     }
+
+    @And("The api user prepares  Json POST request containing {string}and {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesJsonPOSTRequestContainingAndInformationToSendToTheApiSEndpoint(String category, String created_at) {
+        jsonBody = String.format("""
+                {
+                    "category": "%s",
+                    "created_at": "%s"
+                }
+                """, category, created_at);
     }
+
+
+    @And("The api user prepares  fakeJson POST request containing {string}and {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesFakeJsonPOSTRequestContainingAndInformationToSendToTheApiSEndpoint(String categoryy, String created_att) {
+        jsonBody = String.format("""
+                {
+                    "categoryy": "%s",
+                    "created_att": "%s"
+                }
+                """, categoryy, created_att);
+    }
+
+    @And("The api user prepares Updated findingCategory Json Patch request containing {string}and {string} information to send to the api's endpoint.")
+    public void theApiUserPreparesUpdatedFindingCategoryJsonPatchRequestContainingAndInformationToSendToTheApiSEndpoint(String id, String category) {
+        // PATCH request için JSON body hazırlanıyor
+        jsonBody = String.format("""
+                {
+                    "id": "%s",
+                    "category": "%s"
+                }
+                """, id, category);
+        System.out.println("Prepared JSON Body: " + jsonBody);
+    }
+
+
+}
