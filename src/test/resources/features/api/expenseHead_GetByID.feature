@@ -1,4 +1,4 @@
-Feature: As an administrator (admin), I should be able to access the relevant Expense Head data by entering id via API connection.
+ Feature: As an administrator (admin), I should be able to access the relevant Expense Head data by entering id via API connection.
 
   Scenario Outline:TC081[US025API]Validate GET Request for Visitor Purpose by ID
     Given The api user sets "api/getExpenseHeadById" path parameters

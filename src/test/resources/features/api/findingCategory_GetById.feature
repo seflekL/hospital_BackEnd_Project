@@ -1,4 +1,4 @@
-Feature:As an administrator (admin), I should be able to access the relevant finding category data by entering id via API connection.
+ Feature:As an administrator (admin), I should be able to access the relevant finding category data by entering id via API connection.
 
   Scenario Outline: TC098[US030API] Validate GET Request for Finding Category by ID
 

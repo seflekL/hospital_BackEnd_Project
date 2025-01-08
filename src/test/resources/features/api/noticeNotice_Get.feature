@@ -1,4 +1,4 @@
-Feature: As an administrator (admin), I should be able to access announcements via API connection.
+ Feature: As an administrator (admin), I should be able to access announcements via API connection.
 
 
   Scenario:TC087[US027API]Code 200 Validate NoticeAPI Response

@@ -1,3 +1,4 @@
+@smoke
 Feature:As an administrator (admin), I want to be able to update the Expense Head information registered in the system via API connection.
 
   Scenario Outline:TC088[US027API]Code 200 Validate successful update of a expense

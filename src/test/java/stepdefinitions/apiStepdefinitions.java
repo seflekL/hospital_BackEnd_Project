@@ -27,8 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Predicates.equalTo;
-import static com.sun.beans.introspect.PropertyInfo.Name.description;
-import static hooks.api.HooksAPI.spec;
+ import static hooks.api.HooksAPI.spec;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.requestSpecification;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -89,8 +88,7 @@ public class apiStepdefinitions extends BaseTest {
 
     @And("The api user prepares a GET request to send to the api staffList endpoint with invalid authorization")
     public void theApiUserPreparesAGETRequestToSendToTheApiStaffListEndpointWithInvalidAuthorization() {
-        // Hooks sınıfında geçersiz token zaten ayarlandı, burada ek işlem gerekmez
-        System.out.println("GET request prepared with invalid authorization.");
+         System.out.println("GET request prepared with invalid authorization.");
 
     }
 

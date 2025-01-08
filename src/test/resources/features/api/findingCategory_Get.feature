@@ -1,4 +1,4 @@
-Feature: As an administrator (admin) I should be able to access the finding category list via API connection
+ Feature: As an administrator (admin) I should be able to access the finding category list via API connection
 
 
   Scenario: TC095[US0309API] Validate api/getFindingCategory API Response

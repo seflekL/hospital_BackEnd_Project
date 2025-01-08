@@ -1,4 +1,4 @@
-Feature: As an administrator (admin), I should be able to access the relevant announcement data by entering id through the API connection.
+ Feature: As an administrator (admin), I should be able to access the relevant announcement data by entering id through the API connection.
 
   Scenario Outline:TC067[US020API]Validate GET Request for Visitor Purpose by ID
     Given The api user sets "api/getNoticeById" path parameters
