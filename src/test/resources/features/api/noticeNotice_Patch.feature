@@ -1,3 +1,4 @@
+@smoke
 Feature: As an administrator (admin), I should be able to update the announcement information registered in the system via API connection.
 
   Scenario Outline:TC072[US022API]Code 200 Validate successful update of a api/updateNotice

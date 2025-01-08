@@ -1,3 +1,4 @@
+@smoke
 Feature:As an administrator (admin), I should be able to update the blood information registered in the system via API connection.
 
   Scenario Outline:TC056[US017API]Code 200 Validate successful update of a blood group

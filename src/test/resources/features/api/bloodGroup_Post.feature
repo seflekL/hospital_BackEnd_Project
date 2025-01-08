@@ -1,3 +1,4 @@
+@smoke
 Feature: As an administrator (admin) I would like to be able to create a new blood group via API connection.
 
 

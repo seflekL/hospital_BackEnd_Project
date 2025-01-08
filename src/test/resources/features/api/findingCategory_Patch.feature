@@ -1,3 +1,4 @@
+
 Feature: As an administrator (admin), I should be able to update the announcement information registered in the system via API connection.
 
   Scenario Outline:TC0105[US032API]Code 200 Validate successful update of api/updateFindingCategory

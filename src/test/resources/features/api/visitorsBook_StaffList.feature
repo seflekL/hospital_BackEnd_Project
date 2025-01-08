@@ -1,17 +1,12 @@
-Feature: As an administrator (admin), I should be able to access the STAFF List via API connection.
-# Bir yönetici (admin) olarak, API bağlantısı yoluyla PERSONEL Listesine erişebilmeliyim.
 @smoke
+Feature: As an administrator (admin), I should be able to access the STAFF List via API connection.
+
   Scenario: TC001[US001API] - GET Valid authorization returns success for /api/staffList
-  # TC001[US001API] - Geçerli yetkilendirme ile yapılan GET isteği, /api/staffList için başarı döndürmelidir.
 
     Given The api user prepares a valid GET request to the "api/staffList" endpoint with proper authorization
-    # Api kullanıcısı geçerli authorization bilgileri ile "api/staffList" endpointine gönderilecek bir GET request hazırlar
     When The api user sends the GET request and saves the response
-    # Api kullanıcısı GET request'i gönderir ve yanıtı kaydeder
     Then The api user verifies that the status code is 200
-    # Api kullanıcısı status kodunun 200 olduğunu doğrular
     And The api user verifies that the "message" information in the response body is "Success"
-    # Api kullanıcısı response body'deki "message" bilgisinin "Success" olduğunu doğrular
 
 
   Scenario: TC002[US001API] /api/staffList endpoint with Invalid Token information, and it should be verified that the status code returned is 403 and the message in the response body is "You do not have authorization or token error."

@@ -1,3 +1,4 @@
+@smoke
 Feature: As an administrator (admin) I should be able to access the list of blood types registered in the system via API connection.
 
   Scenario:TC046[US014API]Validate Blood Group API Response
