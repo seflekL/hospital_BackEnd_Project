@@ -230,7 +230,7 @@ public class JDBCMethods {
 
     }
 
-    public static ResultSet executeSelectQueryOnur(String queryKey) throws Exception {
+    public static ResultSet executeSelectQuery(String queryKey) throws Exception {
         String query = getQueryOnur(queryKey);
         if (query.equals("QUERY_NOT_FOUND")) {
             throw new IllegalArgumentException("Query key not found: " + queryKey);
